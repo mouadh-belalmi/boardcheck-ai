@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BoardCheck AI - Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .card-radius { border-radius: 24px; }
+        .gradient-bg { background: linear-gradient(135deg, #0D9488 0%, #14B8A6 100%); }
+        .pulse-slow { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        .rtl { direction: rtl; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 gradient-bg card-radius flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-xl font-bold text-gray-900">BoardCheck AI</h1>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-green-500 pulse-slow"></div>
+                        <span class="text-sm text-gray-600">Server Online</span>
+                    </div>
+                    <button class="flex items-center space-x-1 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                        <span>العربية</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="w-20 h-20 mx-auto gradient-bg card-radius flex items-center justify-center shadow-lg mb-8">
+                <svg class="h-10 w-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 002 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                </svg>
+            </div>
+            
+            <h2 class="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-4">
+                PCB Defect Detection
+            </h2>
+            
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                AI-powered quality control for your PCBs
+            </p>
+        </div>
+    </section>
+
+    <!-- Upload Interface -->
+    <section class="py-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto">
+            <h3 class="text-2xl font-semibold text-gray-900 text-center mb-8">Upload PCB Image</h3>
+            
+            <div class="border-2 border-dashed border-gray-300 card-radius p-12 text-center hover:border-teal-400 hover:bg-gray-50 transition-all duration-200 cursor-pointer mb-6">
+                <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                </svg>
+                <p class="text-lg font-medium text-gray-700 mb-2">
+                    Drag and drop an image here, or click to select
+                </p>
+                <p class="text-sm text-gray-500">
+                    Supports JPG, PNG, BMP up to 10MB
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <button class="flex items-center justify-center space-x-2 px-6 py-4 bg-white border border-gray-300 card-radius text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-colors">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    <span class="font-medium">Camera</span>
+                </button>
+                
+                <button class="flex items-center justify-center space-x-2 px-6 py-4 bg-white border border-gray-300 card-radius text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-colors">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <span class="font-medium">Gallery</span>
+                </button>
+                
+                <button class="flex items-center justify-center space-x-2 px-6 py-4 bg-teal-50 border border-teal-200 card-radius text-teal-700 hover:bg-teal-100 hover:border-teal-300 transition-colors">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                    </svg>
+                    <span class="font-medium">Demo</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Results Section -->
+    <section class="py-8 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <h3 class="text-2xl font-semibold text-gray-900 text-center mb-8">Sample Analysis Results</h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Sample Image -->
+                <div class="space-y-4">
+                    <div class="bg-gray-100 card-radius h-64 flex items-center justify-center">
+                        <div class="text-center">
+                            <svg class="w-16 h-16 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <p class="text-gray-500">PCB Image Preview</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sample Results -->
+                <div class="space-y-6">
+                    <!-- Status Card -->
+                    <div class="p-6 card-radius shadow-sm border bg-gradient-to-br from-red-50 to-orange-50 border-red-200">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <svg class="h-8 w-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.502 0L4.732 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                            </svg>
+                            <div>
+                                <h4 class="text-lg font-semibold text-red-700">Defects Detected</h4>
+                                <p class="text-sm text-gray-600">3 defects found</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-700">Quality Grade</span>
+                            <div class="px-3 py-1 rounded-full bg-red-50">
+                                <span class="text-lg font-bold text-red-500">C</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Defect Types -->
+                    <div class="space-y-3">
+                        <h5 class="text-lg font-semibold text-gray-900">Defect Types</h5>
+                        
+                        <div class="bg-white p-4 rounded-lg border shadow-sm">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-2xl">○</span>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Missing Hole</p>
+                                        <p class="text-sm text-gray-500">2 instances</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-red-500">92%</div>
+                                    <p class="text-xs text-gray-500">Confidence</p>
+                                </div>
+                            </div>
+                            <div class="mt-3 w-full bg-gray-200 rounded-full h-2">
+                                <div class="h-2 rounded-full bg-gradient-to-r from-red-400 to-red-500" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-lg border shadow-sm">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-2xl">⚡</span>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Short Circuit</p>
+                                        <p class="text-sm text-gray-500">1 instance</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-orange-500">87%</div>
+                                    <p class="text-xs text-gray-500">Confidence</p>
+                                </div>
+                            </div>
+                            <div class="mt-3 w-full bg-gray-200 rounded-full h-2">
+                                <div class="h-2 rounded-full bg-gradient-to-r from-orange-400 to-orange-500" style="width: 87%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-6 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-sm text-gray-500">
+                © 2024 BoardCheck AI - AI-powered PCB defect detection
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Demo functionality
+        document.querySelector('[class*="border-dashed"]').addEventListener('click', function() {
+            alert('In the full application, this would trigger file upload functionality!');
+        });
+        
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                if (this.textContent.includes('Demo')) {
+                    alert('Demo functionality would load a sample PCB image for analysis.');
+                } else if (this.textContent.includes('Camera')) {
+                    alert('Camera functionality would be available in the full application.');
+                } else if (this.textContent.includes('Gallery')) {
+                    alert('Gallery selection would be available in the full application.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

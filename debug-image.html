@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image URL Debug Tool</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .debug-box {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .error { color: red; }
+        .success { color: green; }
+        .warning { color: orange; }
+        input, button {
+            padding: 8px 12px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background: #007cba;
+            color: white;
+            cursor: pointer;
+        }
+        img {
+            max-width: 400px;
+            max-height: 300px;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 BoardCheck AI - Image URL Debug Tool</h1>
+    
+    <div class="debug-box">
+        <h3>Test Image URL</h3>
+        <input type="text" id="imageUrl" placeholder="Enter image URL or relative path" style="width: 400px;">
+        <button onclick="testImageUrl()">Test URL</button>
+        <br>
+        <button onclick="testResultImageExample()">Test Example Result Image URL</button>
+        <div id="urlResults"></div>
+    </div>
+
+    <div class="debug-box">
+        <h3>Upload & Analyze Test</h3>
+        <input type="file" id="testFile" accept="image/*">
+        <button onclick="testAnalysis()">Test Analysis</button>
+        <div id="analysisResults"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://5.135.79.195';
+
+        function constructImageUrl(imageUrl) {
+            if (!imageUrl) return '';
+            
+            if (imageUrl.startsWith('http')) {
+                return imageUrl;
+            }
+            
+            return `${API_BASE_URL}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
+        }
+
+        function testImageUrl() {
+            const input = document.getElementById('imageUrl');
+            const url = input.value.trim();
+            const resultsDiv = document.getElementById('urlResults');
+            
+            if (!url) {
+                resultsDiv.innerHTML = '<p class="error">Please enter a URL</p>';
+                return;
+            }
+
+            const constructedUrl = constructImageUrl(url);
+            
+            resultsDiv.innerHTML = `
+                <h4>URL Test Results:</h4>
+                <p><strong>Original input:</strong> ${url}</p>
+                <p><strong>Constructed URL:</strong> ${constructedUrl}</p>
+                <p><strong>Testing image load...</strong></p>
+                <img src="${constructedUrl}" 
+                     onload="document.getElementById('loadStatus').innerHTML='<span class=\\"success\\">✅ Image loaded successfully!</span>'"
+                     onerror="document.getElementById('loadStatus').innerHTML='<span class=\\"error\\">❌ Failed to load image</span>'"
+                     alt="Test image">
+                <div id="loadStatus"></div>
+            `;
+        }
+
+        function testResultImageExample() {
+            // Test with typical server response paths
+            const examplePaths = [
+                '/static/results/result_123.jpg',
+                'static/results/result_123.jpg',
+                '/results/analyzed_image.jpg',
+                'results/analyzed_image.jpg'
+            ];
+
+            let html = '<h4>Testing Example Result Image Paths:</h4>';
+            
+            examplePaths.forEach((path, index) => {
+                const constructedUrl = constructImageUrl(path);
+                html += `
+                    <div style="border: 1px solid #eee; padding: 10px; margin: 5px 0;">
+                        <p><strong>Path ${index + 1}:</strong> ${path}</p>
+                        <p><strong>Constructed:</strong> ${constructedUrl}</p>
+                        <img src="${constructedUrl}" 
+                             onload="this.nextSibling.innerHTML='<span class=\\"success\\">✅ Loaded</span>'"
+                             onerror="this.nextSibling.innerHTML='<span class=\\"error\\">❌ Failed</span>'"
+                             style="max-width: 200px; max-height: 150px;"
+                             alt="Test ${index + 1}">
+                        <span style="margin-left: 10px;">Loading...</span>
+                    </div>
+                `;
+            });
+
+            document.getElementById('urlResults').innerHTML = html;
+        }
+
+        async function testAnalysis() {
+            const fileInput = document.getElementById('testFile');
+            const resultsDiv = document.getElementById('analysisResults');
+            
+            if (!fileInput.files.length) {
+                resultsDiv.innerHTML = '<p class="error">Please select a file first</p>';
+                return;
+            }
+
+            const file = fileInput.files[0];
+            resultsDiv.innerHTML = '<p>🔄 Analyzing image...</p>';
+
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/detect`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                
+                let html = `
+                    <h4>✅ Analysis Complete!</h4>
+                    <pre style="background: #f8f8f8; padding: 10px; border-radius: 4px; overflow-x: auto; white-space: pre-wrap;">
+${JSON.stringify(result, null, 2)}
+                    </pre>
+                `;
+
+                if (result.result_image_url) {
+                    const constructedUrl = constructImageUrl(result.result_image_url);
+                    html += `
+                        <h4>Result Image Test:</h4>
+                        <p><strong>Server returned:</strong> ${result.result_image_url}</p>
+                        <p><strong>Constructed URL:</strong> ${constructedUrl}</p>
+                        <img src="${constructedUrl}" 
+                             onload="this.nextSibling.innerHTML='<span class=\\"success\\">✅ Result image loaded successfully!</span>'"
+                             onerror="this.nextSibling.innerHTML='<span class=\\"error\\">❌ Failed to load result image</span>'"
+                             alt="Analysis result"
+                             style="max-width: 400px; border: 2px solid #007cba;">
+                        <div style="margin-top: 10px;">Loading result image...</div>
+                    `;
+                }
+
+                resultsDiv.innerHTML = html;
+
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <h4 class="error">❌ Analysis Failed</h4>
+                    <p class="error">Error: ${error.message}</p>
+                    <p>Check console for more details.</p>
+                `;
+                console.error('Analysis error:', error);
+            }
+        }
+
+        // Test server health on load
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                const status = response.ok ? 
+                    '<span class="success">✅ Server online</span>' : 
+                    '<span class="warning">⚠️ Server responding but not OK</span>';
+                
+                document.body.insertAdjacentHTML('afterbegin', 
+                    `<div class="debug-box">
+                        <h3>Server Status</h3>
+                        <p>API Base URL: ${API_BASE_URL}</p>
+                        <p>Status: ${status}</p>
+                    </div>`
+                );
+            } catch (error) {
+                document.body.insertAdjacentHTML('afterbegin', 
+                    `<div class="debug-box">
+                        <h3>Server Status</h3>
+                        <p>API Base URL: ${API_BASE_URL}</p>
+                        <p class="error">❌ Cannot connect to server</p>
+                        <p class="error">Error: ${error.message}</p>
+                    </div>`
+                );
+            }
+        });
+    </script>
+</body>
+</html>
