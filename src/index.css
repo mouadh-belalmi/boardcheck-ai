@@ -28,6 +28,11 @@ code {
   text-align: inherit;
 }
 
+/* Override RTL text-align for centered content */
+.rtl .text-center {
+  text-align: center !important;
+}
+
 /* Arabic font specific styles */
 .rtl {
   font-family: 'Tajawal', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
